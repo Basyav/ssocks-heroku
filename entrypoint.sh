@@ -5,6 +5,9 @@ if [[ -z "${PASSWORD}" ]]; then
 fi
 echo ${PASSWORD}
 
+export PASSWORD_JSON="$(echo -n "$PASSWORD" | jq -Rc)"
+echo ${PASSWORD_JSON}
+
 if [[ -z "${ENCRYPT}" ]]; then
   export ENCRYPT="chacha20-ietf-poly1305"
 fi
@@ -28,11 +31,11 @@ case "$AppName" in
 		;;
 esac
 
-mv /conf/shadowsocks-libev_config.json /etc/shadowsocks-libev/config.json
+bash /conf/shadowsocks-libev_config.json >  /etc/shadowsocks-libev/config.json
+echo /etc/shadowsocks-libev/config.json
 cat /etc/shadowsocks-libev/config.json
 
-bash /conf/nginx_ss.conf > /etc/nginx/conf.d/ss.conf
-echo /etc/nginx/conf.d/ss.conf
+mv /conf/nginx_ss.conf /etc/nginx/conf.d/ss.conf
 cat /etc/nginx/conf.d/ss.conf
 
 
